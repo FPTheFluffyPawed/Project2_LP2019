@@ -4,27 +4,10 @@ using System.Text;
 
 namespace FelliGame
 {
-    public class Piece
+    public class Player
     {
-        // Character to represent the piece.
-        public char Symbol { get; protected set; }
-
-        // Color to represent the pieces.
-        public ConsoleColor Color { get; set; }
-
         // The Piece's position.
         public Position Pos { get; set; }
-
-        /// <summary>
-        /// The constructor that asks for a color and assigns 'S' to the
-        /// Symbol.
-        /// </summary>
-        /// <param name="color">Color to represent this as.</param>
-        public Piece(ConsoleColor color)
-        {
-            Symbol = 'O';
-            Color = color;
-        }
 
         /*public Position GetPosition(Board board)
         {
@@ -32,7 +15,7 @@ namespace FelliGame
             Position desiredCoordinate = PositionForNumber(position);
             return desiredCoordinate;
         }*/
-        private Position PositionForNumber(int position)
+        /*private Position PositionForNumber(int position)
         {
             switch (position)
             {
@@ -42,6 +25,6 @@ namespace FelliGame
                 default:
                     break;
             }
-        }
+        }*/
     }
 }
