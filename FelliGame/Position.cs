@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FelliGame
 {
-    public struct Position
+    public class Position
     {
         // Variables.
         public int X { get; }
