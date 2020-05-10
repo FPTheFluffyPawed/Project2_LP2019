@@ -6,9 +6,9 @@ namespace FelliGame
 {
     public enum State
     {
-        Black,
+        Undecided,
         White,
-        Blocked,
-        Undecided
+        Black,
+        Blocked
     }
 }
