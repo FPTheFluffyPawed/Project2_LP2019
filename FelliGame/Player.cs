@@ -6,9 +6,9 @@ namespace FelliGame
 {
     public class Player
     {
-        public Position GetPosition(Board board)
+        public Position GetPosition()
         {
-            int position = Int32.Parse(Console.ReadLine());
+            int position = int.Parse(Console.ReadLine());
             Position desiredCoordinate = PositionForNumber(position);
             return desiredCoordinate;
         }

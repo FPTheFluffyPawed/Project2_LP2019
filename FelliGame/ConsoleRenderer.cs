@@ -13,9 +13,16 @@ namespace FelliGame
             {
                 for (int column = 0; column < symbols.GetLength(1); column++)
                 {
-                    symbols[row, column] = SymbolFor(
-                        board.GetState(new Position(row, column)));
-                    Console.Write(symbols[row, column]);
+                    Position position = new Position(row, column);
+
+                    if (board.IsOccupied(position))
+                    {
+                        symbols[row, column] = SymbolFor(
+                            board.GetPiece(new Position(row, column)));
+                        Console.Write(symbols[row, column]);
+                    }
+                    else
+                        Console.Write('.');
                 }
 
                 Console.WriteLine();
@@ -28,14 +35,21 @@ namespace FelliGame
         /// </summary>
         /// <param name="state">Piece.</param>
         /// <returns>A char.</returns>
-        private char SymbolFor(State state)
+        private char SymbolFor(Piece piece)
         {
-            switch (state)
-            {
-                case State.Black: return 'B';
-                case State.White: return 'W';
-                default: return ' ';
-            }
+            if (piece.State == State.Black)
+                return 'B';
+            else if (piece.State == State.White)
+                return 'W';
+            else if (piece.State == State.Blocked)
+                return ' ';
+            else
+                return '.';
+        }
+
+        public void RenderResults(Piece winner)
+        {
+            Console.WriteLine(SymbolFor(winner) + " wins!");
         }
     }
 }
