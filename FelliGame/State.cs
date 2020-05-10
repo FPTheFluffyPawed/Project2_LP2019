@@ -6,7 +6,6 @@ namespace FelliGame
 {
     public enum State
     {
-        Undecided,
         White,
         Black,
         Blocked
