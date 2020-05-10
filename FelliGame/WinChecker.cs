@@ -4,12 +4,12 @@ namespace FelliGame
 {
     public class WinChecker
     {
-        public State Check(Board board)
+        /*public State Check(Board board)
         {
             if (CheckForLose(board, State.Black)) return State.White;
             if (CheckForLose(board, State.White)) return State.Black;
             return State.Undecided;
-        }
+        }*/
 
         private bool CheckForLose(Board board, State player)
         {
