@@ -9,15 +9,16 @@ namespace FelliGame
         public void RenderBoard(Board board)
         {
             char[,] symbols = new char[5, 5];
+            Console.WriteLine("  12345");
             for (int row = 0; row < symbols.GetLength(0); row++)
             {
+                Console.Write("{0} ", row+1);
                 for (int column = 0; column < symbols.GetLength(1); column++)
                 {
                     symbols[row, column] = SymbolFor(
                         board.GetState(new Position(row, column)));
                     Console.Write(symbols[row, column]);
                 }
-
                 Console.WriteLine();
             }
         }

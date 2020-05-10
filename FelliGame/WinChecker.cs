@@ -32,7 +32,7 @@ namespace FelliGame
 
         private bool CheckForMove(Board board, State player)
         {
-            if (board.CanMove(player)) return false;
+            //if (board.CanMove(player)) return false;
 
             return true;
         }
