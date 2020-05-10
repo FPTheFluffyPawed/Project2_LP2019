@@ -14,7 +14,7 @@ namespace FelliGame
 
         public void Play()
         {
-
+            renderer.RenderBoard(board);
         }
     }
 }
