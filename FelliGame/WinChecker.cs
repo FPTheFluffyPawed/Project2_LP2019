@@ -35,12 +35,7 @@ namespace FelliGame
 
         private bool CheckForMove(Board board, Position position)
         {
-<<<<<<< HEAD
-            //if (board.CanMove(player)) return false;
-
-=======
             if (board.CanMoveAtAll(position)) return false;
->>>>>>> 1b299d5843e6ea7a174e700958eb01ecc3e8fb5d
             return true;
         }
     }
