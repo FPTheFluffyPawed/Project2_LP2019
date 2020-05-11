@@ -8,7 +8,7 @@ namespace FelliGame
     {
         public void RenderBoard(Board board)
         {
-            char[,] symbols = new char[5, 5];
+            char[,] symbols = new char[5, 3];
             for (int row = 0; row < symbols.GetLength(0); row++)
             {
                 for (int column = 0; column < symbols.GetLength(1); column++)

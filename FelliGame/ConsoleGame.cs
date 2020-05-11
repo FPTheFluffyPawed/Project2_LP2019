@@ -16,7 +16,8 @@ namespace FelliGame
         {
             //string aux;
 
-            while(true)
+            // while(winChecker.Check(board) == State.Blocked)
+            while (true)
             {
                 // Order of things
                 // 1 - Render Board
@@ -29,35 +30,41 @@ namespace FelliGame
                 Position nextMove;
                 Piece selectedState;
 
-                //board.ShowAvailableStates(board.NextTurn);
+                board.ShowAvailableStates(board.NextTurn);
 
-                //if (board.NextTurn == State.Black)
-                //{
-                Console.WriteLine("Black, it's your turn!");
-                board.ShowAvailableStates(State.Black);
+                if (board.NextTurn == State.Black)
+                {
+                    Console.WriteLine("Black, it's your turn!");
 
-                Console.WriteLine("Which piece to move?");
-                selectedState = board.GetPiece(player1.GetPosition());
+                    selectedState = board.GetPiece(player1.GetPosition());
 
-                //We move this state...
-                nextMove = board.Move(selectedState);
+                    //We move this state...
+                    nextMove = board.Move(selectedState);
 
-                // Finish.
-                //}
+                    // Finish.
+                }
+                else
+                {
+                    Console.WriteLine("White, it's your turn!");
+
+                    selectedState = board.GetPiece(player2.GetPosition());
+
+                    //We move this state...
+                    nextMove = board.Move(selectedState);
+
+                    // Finish.
+                }
 
                 // Check if the turn worked out for our player, if this turns
                 // false, it will repeat over until the player does it right.
-                if(!board.SetState(nextMove, board.NextTurn))
+                if (!board.WasTurnSuccesful(selectedState, nextMove))
                 {
-                    Console.WriteLine("Illegal move!");
+                    Console.WriteLine("Wrong move, try again!");
                 }
-
-
-
             }
 
             renderer.RenderBoard(board);
-            //renderer.RenderResults(winChecker.Check(board));
+            //renderer.RenderResults(winChecker.Check(board.NextTurn));
 
             Console.ReadKey();
         }
