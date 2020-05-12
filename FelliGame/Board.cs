@@ -259,7 +259,7 @@ namespace FelliGame
                     Position position = new Position(x, y);
                     number++;
 
-                    if (IsOccupied(position))
+                    if (!IsOccupied(position))
                     {
                         if(GetPiece(position).State == currentPlayer)
                         {
@@ -280,11 +280,11 @@ namespace FelliGame
 
         public bool IsOccupied(Position pos)
         {
-            // Check if the position is out of bounds of the board.
-            if (pos.Y > board.GetLength(1) - 1 || pos.Y < 0
-                || pos.X > board.GetLength(0) - 1 || pos.X < 0)
+
+            if (pos.Y > board.GetLength(1) - 1 || pos.Y < 0 ||
+                pos.X > board.GetLength(0) - 1 || pos.X < 0)
                 return true;
-            // Else check if the position is free.
+
             else
                 return board[pos.X, pos.Y] != null;
         }
@@ -302,9 +302,120 @@ namespace FelliGame
                 return true;
         }
 
-        private bool CanEat(Position position)
+        public bool CanEat(Position currentPos)
         {
+            // WIP: Later on to check if there is a spot to "eat"
+            // should also ask for the currentPiece's state as well
+            // then we can use ifs to check!
+            //
+            // If it's white, use GetPiece to check for the opponent
+            //
+            // This is just so we can't hop over our own pieces to "eat",
+            // because that makes no sense.
 
+            // If the piece is in the center, we'll add the diagonal movement
+            // to check as well.
+
+            // Create the possible positions.
+            Position[] possiblePositions = new Position[8];
+
+            // Add our possible positions.
+
+            // Upper Left.
+            possiblePositions[0] = new Position(
+                currentPos.X - 1, currentPos.Y - 1);
+
+            // Upper Middle.
+            possiblePositions[1] = new Position(
+                currentPos.X - 1, currentPos.Y);
+
+            // Upper Right.
+            possiblePositions[2] = new Position(
+                currentPos.X - 1, currentPos.Y + 1);
+
+            // lower right.
+            possiblePositions[3] = new Position(
+                currentPos.X + 1, currentPos.Y + 1);
+
+            // Lower Middle.
+            possiblePositions[4] = new Position(
+                currentPos.X + 1, currentPos.Y);
+
+            // Lower Left.
+            possiblePositions[5] = new Position(
+                currentPos.X + 1, currentPos.Y - 1);
+
+            // Middle Left.
+            possiblePositions[6] = new Position(
+                currentPos.X, currentPos.Y - 1);
+
+            // Middle Right.
+            possiblePositions[7] = new Position(
+                currentPos.X, currentPos.Y + 1);
+
+            for (int i = 0; i < possiblePositions.Length; i++)
+                if (possiblePositions[i].Y < board.GetLength(1) - 1 || possiblePositions[i].Y > 0 ||
+                    possiblePositions[i].X < board.GetLength(0) - 1 || possiblePositions[i].X > 0)
+                    if (GetPiece(currentPos).State == State.White)
+                    {
+                        if (GetPiece(possiblePositions[i]).State == State.Black)
+                        {
+                            if (i == 0)
+                                if (!IsOccupied(possiblePositions[3]))
+                                    return true;
+                            if (i == 1)
+                                if (!IsOccupied(possiblePositions[4]))
+                                    return true;
+                            if (i == 2)
+                                if (!IsOccupied(possiblePositions[5]))
+                                    return true;
+                            if (i == 3)
+                                if (!IsOccupied(possiblePositions[0]))
+                                    return true;
+                            if (i == 4)
+                                if (!IsOccupied(possiblePositions[1]))
+                                    return true;
+                            if (i == 5)
+                                if (!IsOccupied(possiblePositions[2]))
+                                    return true;
+                            if (i == 6)
+                                if (!IsOccupied(possiblePositions[7]))
+                                    return true;
+                            if (i == 7)
+                                if (!IsOccupied(possiblePositions[6]))
+                                    return true;
+                        }
+                    }
+
+                    else if (GetPiece(possiblePositions[i]).State == State.Black)
+                    {
+                            if (i == 0)
+                                if (!IsOccupied(possiblePositions[3]))
+                                    return true;
+                            if (i == 1)
+                                if (!IsOccupied(possiblePositions[4]))
+                                    return true;
+                            if (i == 2)
+                                if (!IsOccupied(possiblePositions[5]))
+                                    return true;
+                            if (i == 3)
+                                if (!IsOccupied(possiblePositions[0]))
+                                    return true;
+                            if (i == 4)
+                                if (!IsOccupied(possiblePositions[1]))
+                                    return true;
+                            if (i == 5)
+                                if (!IsOccupied(possiblePositions[2]))
+                                    return true;
+                            if (i == 6)
+                                if (!IsOccupied(possiblePositions[7]))
+                                    return true;
+                            if (i == 7)
+                                if (!IsOccupied(possiblePositions[6]))
+                                    return true;
+                    }
+
+                    return false;
         }
 
         public void SwitchNextTurn()
