@@ -28,7 +28,12 @@ namespace FelliGame
         private bool IsPieceInCenter(Position pos)
         {
             // Center is (2, 1).
-            if (pos.X == 2 && pos.Y == 1)
+            // Additionally, 
+            if ((pos.X == 2 && pos.Y == 1)
+                || (pos.X == 1 && pos.Y == 0)
+                || (pos.X == 1 && pos.Y == 2)
+                || (pos.X == 3 && pos.Y == 0)
+                || (pos.X == 3 && pos.Y == 2))
                 return true;
             else
                 return false;
@@ -80,26 +85,31 @@ namespace FelliGame
             // If the piece is in the center, add the diagonal options.
             if (IsPieceInCenter(currentPos))
             {
-                // Upper Left.
+                // Lower Right.
                 possiblePositions[4] = new Position(
                     currentPos.X + 1, currentPos.Y + 1);
 
-                // Upper Right.
+                // Lower Left.
                 possiblePositions[5] = new Position(
                     currentPos.X - 1, currentPos.Y + 1);
 
-                // Lower Left.
+                // Upper Right.
                 possiblePositions[6] = new Position(
                     currentPos.X + 1, currentPos.Y - 1);
 
-                // Lower Right.
+                // Upper Left.
                 possiblePositions[7] = new Position(
                     currentPos.X - 1, currentPos.Y - 1);
             }
 
+            // For every possible position, check if they aren't occupied.
+            // If not, return true immediately since there's a free spot.
+            //
+            // For our checking if the piece in there is beyond, we must return
+            // true here.
             for (int i = 0; i < possiblePositions.Length; i++)
-                if (!IsOccupied(possiblePositions[i]))
-                    return true;
+                if (CanMoveToLocation(possiblePositions[i]))
+                        return true;
             return false;
         }
 
@@ -134,19 +144,19 @@ namespace FelliGame
             // If the piece is in the center, add the diagonal options.
             if (IsPieceInCenter(selectedPiece.Pos))
             {
-                // Upper Left.
+                // Lower Right.
                 destinations[4] = new Position(
                     selectedPiece.Pos.X + 1, selectedPiece.Pos.Y + 1);
 
-                // Upper Right.
+                // Lower Left.
                 destinations[5] = new Position(
                     selectedPiece.Pos.X - 1, selectedPiece.Pos.Y + 1);
 
-                // Lower Left.
+                // Upper Right.
                 destinations[6] = new Position(
                     selectedPiece.Pos.X + 1, selectedPiece.Pos.Y - 1);
 
-                // Lower Right.
+                // Upper Left.
                 destinations[7] = new Position(
                     selectedPiece.Pos.X - 1, selectedPiece.Pos.Y - 1);
             }
@@ -158,8 +168,8 @@ namespace FelliGame
 
             // If our piece is in the middle, it can move diagonally.
             if (IsPieceInCenter(selectedPiece.Pos))
-                Console.WriteLine("Up/Left (5) | Up/Right (6) |" +
-                    " Lower/Left (7) | Lower/Right (8)");
+                Console.WriteLine("Lower/Right (5) | Lower/Left (6) |" +
+                    " Upper/Right (7) | Upper/Left (8)");
 
             while(!convertSuccesful)
             {
@@ -172,17 +182,47 @@ namespace FelliGame
             // Adjust for our ForLoop.
             convertedAux--;
 
-            for(int i = 1; i <= destinations.Length; i++)
+            for(int i = 0; i <= destinations.Length; i++)
             {
                 if(i == convertedAux)
                 {
-                    if(CanMoveToLocation(destinations[i]))
+                    if(IsOccupied(destinations[i]))
                     {
-                        return destinations[i];
+                        if(CanEat(destinations[i]))
+                        {
+                            return JumpPosition(convertedAux, destinations[i]);
+                        }
                     }
+                    else
+                        return destinations[i];
                 }
             }
             return blockedPosition;
+        }
+
+        private Position JumpPosition(int option, Position position)
+        {
+            board[position.X, position.Y] = null;
+
+            switch (option)
+            {
+                case 0:
+                    return new Position(position.X - 2, position.Y);
+                case 1:
+                    return new Position(position.X, position.Y - 2);
+                case 2:
+                    return new Position(position.X, position.Y + 2);
+                case 3:
+                    return new Position(position.X + 2, position.Y);
+                case 4:
+                    return new Position(position.X + 2, position.Y + 2);
+                case 5:
+                    return new Position(position.X - 2, position.Y + 2);
+                case 6:
+                    return new Position(position.X + 2, position.Y - 2);
+                default:
+                    return new Position(position.X - 2, position.Y - 2);
+            }
         }
 
         private void MovePiece(Piece piece, Position position)
@@ -197,12 +237,21 @@ namespace FelliGame
         public bool WasTurnSuccesful(Piece piece, Position position)
         {
             // If this spot is occupied, return it as false.
-            if (IsOccupied(position)) return false;
+            if (IsOccupied(position))
+                if (CanEat(position))
+                    Eat(piece, position);
+                else return false;
+
 
             // Else, we move the position and then move onto next turn.
             MovePiece(piece, position);
             SwitchNextTurn();
             return true;
+        }
+
+        private void Eat(Piece piece, Position position)
+        {
+
         }
 
         public void ShowAvailableStates(State currentPlayer)
@@ -249,18 +298,25 @@ namespace FelliGame
                 return board[pos.X, pos.Y] != null;
         }
 
-        public bool CanMoveToLocation(Position destination)
+        private bool CanMoveToLocation(Position destination)
         {
             if (IsOccupied(destination))
             {
-                Console.WriteLine("This piece can't move there!");
-                return false;
+                if (CanEat(destination))
+                    return true;
+                else
+                    return false;
             }
             else
                 return true;
         }
 
-        private void SwitchNextTurn()
+        private bool CanEat(Position position)
+        {
+
+        }
+
+        public void SwitchNextTurn()
         {
             if (NextTurn == State.Black) NextTurn = State.White;
             else NextTurn = State.Black;
