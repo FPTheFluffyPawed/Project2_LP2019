@@ -8,15 +8,11 @@ namespace FelliGame
     {
         public void RenderBoard(Board board)
         {
-<<<<<<< HEAD
-            char[,] symbols = new char[5, 5];
-            Console.WriteLine("  12345");
-=======
             char[,] symbols = new char[5, 3];
->>>>>>> 1b299d5843e6ea7a174e700958eb01ecc3e8fb5d
+            Console.WriteLine("   0  1  2");
             for (int row = 0; row < symbols.GetLength(0); row++)
             {
-                Console.Write("{0} ", row+1);
+                Console.Write("{0} ", row);
                 for (int column = 0; column < symbols.GetLength(1); column++)
                 {
                     Position position = new Position(row, column);
@@ -25,10 +21,14 @@ namespace FelliGame
                     {
                         symbols[row, column] = SymbolFor(
                             board.GetPiece(new Position(row, column)));
-                        Console.Write(symbols[row, column]);
+                        if(row == 1 || row == 3) Console.Write(" ");
+                        if(column == 0 && (row == 1 || row == 3))
+                            Console.Write(" "); 
+                        if (row == 0 || row == 4) Console.Write(" {0} ", symbols[row, column]);
+                        else Console.Write(symbols[row, column]);
                     }
                     else
-                        Console.Write('.');
+                        Console.Write("   .");
                 }
                 Console.WriteLine();
             }
