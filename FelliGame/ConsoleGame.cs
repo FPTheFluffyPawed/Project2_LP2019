@@ -33,8 +33,7 @@ namespace FelliGame
                 }
             } while (aux == null);
 
-                // while(winChecker.Check(board) == State.Blocked)
-                while (true)
+            while (winChecker.Check(board) == State.Blocked)
             {
                 // Order of things
                 // 1 - Render Board
@@ -81,7 +80,7 @@ namespace FelliGame
             }
 
             renderer.RenderBoard(board);
-            //renderer.RenderResults(winChecker.Check(board.NextTurn));
+            renderer.RenderResults(winChecker.Check(board));
 
             Console.ReadKey();
         }
