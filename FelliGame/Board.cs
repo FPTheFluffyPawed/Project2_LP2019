@@ -237,21 +237,12 @@ namespace FelliGame
         public bool WasTurnSuccesful(Piece piece, Position position)
         {
             // If this spot is occupied, return it as false.
-            if (IsOccupied(position))
-                if (CanEat(position))
-                    Eat(piece, position);
-                else return false;
-
+            if (IsOccupied(position)) return false;
 
             // Else, we move the position and then move onto next turn.
             MovePiece(piece, position);
             SwitchNextTurn();
             return true;
-        }
-
-        private void Eat(Piece piece, Position position)
-        {
-
         }
 
         public void ShowAvailableStates(State currentPlayer)
