@@ -21,12 +21,13 @@ namespace FelliGame
                 {
                     Piece piece = board.GetPiece(new Position(row, column));
 
-                    if (piece.State == player)
-                    {
-                        found =+ 1;
-                        if (CheckForMove(board, new Position(row, column)))
-                            cantMove += 1;
-                    }
+                    if(piece != null)
+                        if (piece.State == player)
+                        {
+                            found =+ 1;
+                            if (CheckForMove(board, new Position(row, column)))
+                                cantMove += 1;
+                        }
                 }
             }
             if (found != cantMove) return false;
@@ -35,8 +36,8 @@ namespace FelliGame
 
         private bool CheckForMove(Board board, Position position)
         {
-            if (board.CanMoveAtAll(position)) return false;
-            return true;
+            if (board.CanMoveAtAll(position)) return true;
+            return false;
         }
     }
 }
