@@ -16,7 +16,7 @@ namespace FelliGame
                 Console.WriteLine("Which piece to move? (Valid option only.)");
                 isConverted = int.TryParse(Console.ReadLine(),
                     out position)
-                    && (position > 0 && position < 14);
+                    && (position > 0 && position < 16);
             }
             Position desiredCoordinate = PositionForNumber(position);
             return desiredCoordinate;
