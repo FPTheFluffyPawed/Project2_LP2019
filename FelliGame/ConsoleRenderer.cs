@@ -20,15 +20,11 @@ namespace FelliGame
                     if (board.IsOccupied(position))
                     {
                         symbols[row, column] = SymbolFor(
-                            board.GetPiece(new Position(row, column)));
-                        if(row == 1 || row == 3) Console.Write(" ");
-                        if(column == 0 && (row == 1 || row == 3))
-                            Console.Write(" "); 
-                        if (row == 0 || row == 4) Console.Write(" {0} ", symbols[row, column]);
-                        else Console.Write(symbols[row, column]);
+                            board.GetPiece(new Position(row, column)).State);
+                        Console.Write(" {0} ", symbols[row, column]);
                     }
                     else
-                        Console.Write("   .");
+                        Console.Write(" . ");
                 }
                 Console.WriteLine();
             }
@@ -40,21 +36,24 @@ namespace FelliGame
         /// </summary>
         /// <param name="state">Piece.</param>
         /// <returns>A char.</returns>
-        private char SymbolFor(Piece piece)
+        private char SymbolFor(State piece)
         {
-            if (piece.State == State.Black)
+            if (piece == State.Black)
                 return 'B';
-            else if (piece.State == State.White)
+            else if (piece == State.White)
                 return 'W';
-            else if (piece.State == State.Blocked)
+            else if (piece == State.Blocked)
                 return ' ';
             else
                 return '.';
         }
 
-        public void RenderResults(Piece winner)
+        public void RenderResults(State winner)
         {
-            Console.WriteLine(SymbolFor(winner) + " wins!");
+            if (winner == State.White)
+                Console.WriteLine("\nWhite wins!");
+            else
+                Console.WriteLine("\nBlack wins!");
         }
     }
 }

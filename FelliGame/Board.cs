@@ -186,12 +186,14 @@ namespace FelliGame
             {
                 if(i == convertedAux)
                 {
-                    if(IsOccupied(destinations[i]))
+                    if(!IsOutOfBounds(destinations[i]) && IsOccupied(destinations[i]))
                     {
-                        if(CanEat(destinations[i]))
+                        if (CanEat(destinations[i]))
                         {
                             return JumpPosition(convertedAux, destinations[i]);
                         }
+                        else
+                            return destinations[i];
                     }
                     else
                         return destinations[i];
@@ -207,21 +209,21 @@ namespace FelliGame
             switch (option)
             {
                 case 0:
-                    return new Position(position.X - 2, position.Y);
+                    return new Position(position.X - 1, position.Y);
                 case 1:
-                    return new Position(position.X, position.Y - 2);
+                    return new Position(position.X, position.Y - 1);
                 case 2:
-                    return new Position(position.X, position.Y + 2);
+                    return new Position(position.X, position.Y + 1);
                 case 3:
-                    return new Position(position.X + 2, position.Y);
+                    return new Position(position.X + 1, position.Y);
                 case 4:
-                    return new Position(position.X + 2, position.Y + 2);
+                    return new Position(position.X + 1, position.Y + 1);
                 case 5:
-                    return new Position(position.X - 2, position.Y + 2);
+                    return new Position(position.X - 1, position.Y + 1);
                 case 6:
-                    return new Position(position.X + 2, position.Y - 2);
+                    return new Position(position.X + 1, position.Y - 1);
                 default:
-                    return new Position(position.X - 2, position.Y - 2);
+                    return new Position(position.X - 1, position.Y - 1);
             }
         }
 
@@ -237,6 +239,7 @@ namespace FelliGame
         public bool WasTurnSuccesful(Piece piece, Position position)
         {
             // If this spot is occupied, return it as false.
+            if (IsOutOfBounds(position)) return false;
             if (IsOccupied(position)) return false;
 
             // Else, we move the position and then move onto next turn.
@@ -259,9 +262,9 @@ namespace FelliGame
                     Position position = new Position(x, y);
                     number++;
 
-                    if (!IsOccupied(position))
+                    if (IsOccupied(position))
                     {
-                        if(GetPiece(position).State == currentPlayer)
+                        if (GetPiece(position).State == currentPlayer)
                         {
                             if (CanMoveAtAll(position))
                             {
@@ -278,31 +281,40 @@ namespace FelliGame
             return board[position.X, position.Y];
         }
 
+        private bool IsOutOfBounds(Position pos)
+        {
+            if (pos.Y > board.GetLength(1) - 1 || pos.Y < 0
+                || pos.X > board.GetLength(0) - 1 || pos.X < 0)
+                return true;
+            else
+                return false;
+        }
+
         public bool IsOccupied(Position pos)
         {
-
-            if (pos.Y > board.GetLength(1) - 1 || pos.Y < 0 ||
-                pos.X > board.GetLength(0) - 1 || pos.X < 0)
-                return true;
-
-            else
-                return board[pos.X, pos.Y] != null;
+            return board[pos.X, pos.Y] != null;
         }
 
         private bool CanMoveToLocation(Position destination)
         {
-            if (IsOccupied(destination))
+            if(!IsOutOfBounds(destination))
             {
-                if (CanEat(destination))
+                if(!IsOccupied(destination))
+                {
                     return true;
+                }
                 else
-                    return false;
+                {
+                    if (CanEat(destination))
+                        return true;
+                    else
+                        return false;
+                }
             }
-            else
-                return true;
+            return false;
         }
 
-        public bool CanEat(Position currentPos)
+        private bool CanEat(Position currentPos)
         {
             // WIP: Later on to check if there is a spot to "eat"
             // should also ask for the currentPiece's state as well
@@ -354,68 +366,88 @@ namespace FelliGame
                 currentPos.X, currentPos.Y + 1);
 
             for (int i = 0; i < possiblePositions.Length; i++)
-                if (possiblePositions[i].Y < board.GetLength(1) - 1 || possiblePositions[i].Y > 0 ||
-                    possiblePositions[i].X < board.GetLength(0) - 1 || possiblePositions[i].X > 0)
-                    if (GetPiece(currentPos).State == State.White)
+                if(!IsOutOfBounds(possiblePositions[i]))
+                    if (GetPiece(currentPos) != null && GetPiece(possiblePositions[i]) != null)
                     {
-                        if (GetPiece(possiblePositions[i]).State == State.Black)
+                        if (GetPiece(currentPos).State == State.White)
                         {
-                            if (i == 0)
-                                if (!IsOccupied(possiblePositions[3]))
-                                    return true;
-                            if (i == 1)
-                                if (!IsOccupied(possiblePositions[4]))
-                                    return true;
-                            if (i == 2)
-                                if (!IsOccupied(possiblePositions[5]))
-                                    return true;
-                            if (i == 3)
-                                if (!IsOccupied(possiblePositions[0]))
-                                    return true;
-                            if (i == 4)
-                                if (!IsOccupied(possiblePositions[1]))
-                                    return true;
-                            if (i == 5)
-                                if (!IsOccupied(possiblePositions[2]))
-                                    return true;
-                            if (i == 6)
-                                if (!IsOccupied(possiblePositions[7]))
-                                    return true;
-                            if (i == 7)
-                                if (!IsOccupied(possiblePositions[6]))
-                                    return true;
+                            if (GetPiece(possiblePositions[i]).State == State.Black)
+                            {
+                                if (i == 0)
+                                    if (!IsOutOfBounds(possiblePositions[3]))
+                                        if (!IsOccupied(possiblePositions[3]))
+                                        return true;
+                                if (i == 1)
+                                    if (!IsOutOfBounds(possiblePositions[4]))
+                                        if (!IsOccupied(possiblePositions[4]))
+                                        return true;
+                                if (i == 2)
+                                    if (!IsOutOfBounds(possiblePositions[5]))
+                                        if (!IsOccupied(possiblePositions[5]))
+                                        return true;
+                                if (i == 3)
+                                    if (!IsOutOfBounds(possiblePositions[0]))
+                                        if (!IsOccupied(possiblePositions[0]))
+                                        return true;
+                                if (i == 4)
+                                    if (!IsOutOfBounds(possiblePositions[1]))
+                                        if (!IsOccupied(possiblePositions[1]))
+                                        return true;
+                                if (i == 5)
+                                    if (!IsOutOfBounds(possiblePositions[2]))
+                                        if (!IsOccupied(possiblePositions[2]))
+                                        return true;
+                                if (i == 6)
+                                    if (!IsOutOfBounds(possiblePositions[7]))
+                                        if (!IsOccupied(possiblePositions[7]))
+                                        return true;
+                                if (i == 7)
+                                    if (!IsOutOfBounds(possiblePositions[6]))
+                                        if (!IsOccupied(possiblePositions[6]))
+                                        return true;
+                            }
+                        }
+                        else if (GetPiece(currentPos).State == State.Black)
+                        {
+                            if(GetPiece(possiblePositions[i]).State == State.White)
+                            {
+                                if (i == 0)
+                                    if (!IsOutOfBounds(possiblePositions[3]))
+                                        if (!IsOccupied(possiblePositions[3]))
+                                            return true;
+                                if (i == 1)
+                                    if (!IsOutOfBounds(possiblePositions[5]))
+                                        if (!IsOccupied(possiblePositions[4]))
+                                            return true;
+                                if (i == 2)
+                                    if (!IsOutOfBounds(possiblePositions[5]))
+                                        if (!IsOccupied(possiblePositions[5]))
+                                            return true;
+                                if (i == 3)
+                                    if (!IsOutOfBounds(possiblePositions[0]))
+                                        if (!IsOccupied(possiblePositions[0]))
+                                            return true;
+                                if (i == 4)
+                                    if (!IsOutOfBounds(possiblePositions[1]))
+                                        if (!IsOccupied(possiblePositions[1]))
+                                            return true;
+                                if (i == 5)
+                                    if (!IsOutOfBounds(possiblePositions[2]))
+                                        if (!IsOccupied(possiblePositions[2]))
+                                            return true;
+                                if (i == 6)
+                                    if (!IsOutOfBounds(possiblePositions[7]))
+                                        if (!IsOccupied(possiblePositions[7]))
+                                            return true;
+                                if (i == 7)
+                                    if (!IsOutOfBounds(possiblePositions[6]))
+                                        if (!IsOccupied(possiblePositions[6]))
+                                            return true;
+                            }
                         }
                     }
 
-                    else if (GetPiece(possiblePositions[i]).State == State.Black)
-                    {
-                            if (i == 0)
-                                if (!IsOccupied(possiblePositions[3]))
-                                    return true;
-                            if (i == 1)
-                                if (!IsOccupied(possiblePositions[4]))
-                                    return true;
-                            if (i == 2)
-                                if (!IsOccupied(possiblePositions[5]))
-                                    return true;
-                            if (i == 3)
-                                if (!IsOccupied(possiblePositions[0]))
-                                    return true;
-                            if (i == 4)
-                                if (!IsOccupied(possiblePositions[1]))
-                                    return true;
-                            if (i == 5)
-                                if (!IsOccupied(possiblePositions[2]))
-                                    return true;
-                            if (i == 6)
-                                if (!IsOccupied(possiblePositions[7]))
-                                    return true;
-                            if (i == 7)
-                                if (!IsOccupied(possiblePositions[6]))
-                                    return true;
-                    }
-
-                    return false;
+                return false;
         }
 
         public void SwitchNextTurn()
