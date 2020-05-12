@@ -14,10 +14,27 @@ namespace FelliGame
 
         public void Play()
         {
-            //string aux;
+            string aux;
 
-            // while(winChecker.Check(board) == State.Blocked)
-            while (true)
+            do
+            {
+                Console.WriteLine("Who starts, Black (1) or White (2)?");
+                aux = Console.ReadLine();
+
+                switch(aux)
+                {
+                    case "1":
+                        Console.WriteLine("Black goes first!\n");
+                        break;
+                    case "2":
+                        Console.WriteLine("White goes first!\n");
+                        board.SwitchNextTurn();
+                        break;
+                }
+            } while (aux == null);
+
+                // while(winChecker.Check(board) == State.Blocked)
+                while (true)
             {
                 // Order of things
                 // 1 - Render Board
