@@ -234,6 +234,9 @@ namespace FelliGame
 
             // Remove the origin.
             board[piece.Pos.X, piece.Pos.Y] = null;
+
+            // Update our piece's position.
+            piece.Pos = position;
         }
 
         public bool WasTurnSuccesful(Piece piece, Position position)
