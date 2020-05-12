@@ -8,7 +8,7 @@ namespace FelliGame
     {
         public void RenderBoard(Board board)
         {
-            char[,] symbols = new char[5, 3];
+            string[,] symbols = new string[5, 3];
             Console.WriteLine("   0  1  2");
             for (int row = 0; row < symbols.GetLength(0); row++)
             {
@@ -21,10 +21,19 @@ namespace FelliGame
                     {
                         symbols[row, column] = SymbolFor(
                             board.GetPiece(new Position(row, column)).State);
-                        Console.Write(" {0} ", symbols[row, column]);
+                        if(row == 1 || row == 3) Console.Write(" ");
+                        if(column == 0 && (row == 1 || row == 3))
+                            Console.Write(" "); 
+                        if (row == 0 || row == 4) 
+                            Console.Write(" {0} ", symbols[row, column]);
+                        else Console.Write(symbols[row, column]);
                     }
                     else
-                        Console.Write(" . ");
+                    {
+                        if(row < 2) Console.Write(" .");
+                        if(row == 2) Console.Write(".");
+                        if(row > 2) Console.Write(" .");
+                    }   
                 }
                 Console.WriteLine();
             }
@@ -36,16 +45,16 @@ namespace FelliGame
         /// </summary>
         /// <param name="state">Piece.</param>
         /// <returns>A char.</returns>
-        private char SymbolFor(State piece)
+        private string SymbolFor(State piece)
         {
             if (piece == State.Black)
-                return 'B';
+                return "B";
             else if (piece == State.White)
-                return 'W';
+                return "W";
             else if (piece == State.Blocked)
-                return ' ';
+                return "    ";
             else
-                return '.';
+                return ".";
         }
 
         public void RenderResults(State winner)
