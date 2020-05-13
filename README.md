@@ -10,7 +10,7 @@
 **Inácio Amerio (a21803493)**
 
 - Início o projeto, organizou a estrutura do trabalho, discutiu com os colegas e
-ajudou aos outros. Trabalhou nas classes `Board.cs`, `ConsoleGame.cs`,
+ajudou os outros. Trabalhou nas classes `Board.cs`, `ConsoleGame.cs`,
 `Piece.cs`, `Position.cs` e `Player.cs`.
 
 **João Dias (a21803573)**
