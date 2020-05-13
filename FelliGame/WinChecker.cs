@@ -4,6 +4,11 @@ namespace FelliGame
 {
     public class WinChecker
     {
+        /// <summary>
+        /// this method checks if any player won
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
         public State Check(Board board)
         {
             if (CheckForLose(board, State.Black)) return State.White;
@@ -11,6 +16,13 @@ namespace FelliGame
             return State.Blocked;
         }
 
+        /// <summary>
+        /// This methods verifies if the selected player activated any 
+        /// of the lose conditions
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="player"></param>
+        /// <returns></returns>
         private bool CheckForLose(Board board, State player)
         {
             int found = 0;
@@ -34,6 +46,12 @@ namespace FelliGame
             return true;
         }
 
+        /// <summary>
+        /// This method verifies if the corrent piece has any move avaible
+        /// </summary>
+        /// <param name="board"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
         private bool CheckForMove(Board board, Position position)
         {
             if (board.CanMoveAtAll(position)) return true;
