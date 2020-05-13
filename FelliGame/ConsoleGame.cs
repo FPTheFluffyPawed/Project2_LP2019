@@ -9,11 +9,55 @@ namespace FelliGame
     /// </summary>
     public class ConsoleGame
     {
-        Board board = new Board();
-        WinChecker winChecker = new WinChecker();
-        ConsoleRenderer renderer = new ConsoleRenderer();
-        Player player1 = new Player();
-        Player player2 = new Player();
+        /// <summary>
+        /// Board to run the game in.
+        /// </summary>
+        private Board board;
+
+        /// <summary>
+        /// Our win condition checker.
+        /// </summary>
+        private WinChecker winChecker;
+
+        /// <summary>
+        /// Renderer to be used for Console.
+        /// </summary>
+        private ConsoleUI renderer;
+
+        /// <summary>
+        /// Menu to open for Console.
+        /// </summary>
+        //private ConsoleMenu cm;
+
+        /// <summary>
+        /// Player 1.
+        /// </summary>
+        private Player player1;
+
+        /// <summary>
+        /// Player 2.
+        /// </summary>
+        private Player player2;
+
+        /// <summary>
+        /// Initialize all the variables needed.
+        /// </summary>
+        public ConsoleGame()
+        {
+            board = new Board();
+            winChecker = new WinChecker();
+            renderer = new ConsoleUI();
+            player1 = new Player();
+            player2 = new Player();
+        }
+
+        /// <summary>
+        /// Open the menu associated to ConsoleMenu.
+        /// </summary>
+        public void Menu()
+        {
+            renderer.RenderConsoleMenu(this);
+        }
 
         /// <summary>
         /// Play the game!
@@ -43,6 +87,9 @@ namespace FelliGame
                         break;
                 }
             } while (aux == null);
+
+            // Set the initial positions.
+            board.AssignStates();
 
             while (winChecker.Check(board) == State.Blocked)
             {

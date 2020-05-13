@@ -9,21 +9,25 @@ namespace FelliGame
     /// </summary>
     public class Board
     {
-        // We can say that the board is made up of state, since the board house
-        // will have a given state
+        /// <summary>
+        /// Board where we will store the pieces of the game.
+        /// </summary>
         private Piece[,] board;
 
-        // The next turn.
+        /// <summary>
+        /// Checks who's current turn it is.
+        /// </summary>
         public State NextTurn { get; private set; }
 
-        // Create our board for use. For now, it'll be limited to 5 x 3.
-        // It will automatically assign the states to the proper locations.
-        // By default, leave Black as the starting.
+        /// <summary>
+        /// Create our board that creates it with the correct space, and by
+        /// default starts the current turn as Black, even though it is later
+        /// picked by our players.
+        /// </summary>
         public Board()
         {
             board = new Piece[5, 3];
             NextTurn = State.Black;
-            AssignStates();
         }
 
         /// <summary>
@@ -554,7 +558,7 @@ namespace FelliGame
         /// <summary>
         /// Method to assign the initial states of the game.
         /// </summary>
-        private void AssignStates()
+        public void AssignStates()
         {
             // Since the default state of the board is always the same,
             // there just isn't any other way to go around this.
