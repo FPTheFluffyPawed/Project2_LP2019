@@ -148,11 +148,11 @@ namespace FelliGame
                 destinations[4] = new Position(
                     selectedPiece.Pos.X + 1, selectedPiece.Pos.Y + 1);
 
-                // Lower Left.
+                // Upper Right.
                 destinations[5] = new Position(
                     selectedPiece.Pos.X - 1, selectedPiece.Pos.Y + 1);
 
-                // Upper Right.
+                // Lower Left.
                 destinations[6] = new Position(
                     selectedPiece.Pos.X + 1, selectedPiece.Pos.Y - 1);
 
@@ -168,8 +168,8 @@ namespace FelliGame
 
             // If our piece is in the middle, it can move diagonally.
             if (IsPieceInCenter(selectedPiece.Pos))
-                Console.WriteLine("Lower/Right (5) | Lower/Left (6) |" +
-                    " Upper/Right (7) | Upper/Left (8)");
+                Console.WriteLine("Lower/Right (5) | Upper/Right (6) |" +
+                    " Lower/Left (7) | Upper/Left (8)");
 
             while(!convertSuccesful)
             {
