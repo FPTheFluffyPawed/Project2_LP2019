@@ -2,10 +2,13 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// This class verifies if there was any winner
+    /// </summary>
     public class WinChecker
     {
         /// <summary>
-        /// this method checks if any player won
+        /// This method checks if any player won
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
