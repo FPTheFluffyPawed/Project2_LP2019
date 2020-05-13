@@ -3,15 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 namespace FelliGame
 {
     /// <summary>
-    /// This class verifies if there was any winner
+    /// Win condition checker for the game.
     /// </summary>
     public class WinChecker
     {
         /// <summary>
-        /// This method checks if any player won
+        /// This method checks if any player won.
         /// </summary>
-        /// <param name="board"></param>
-        /// <returns></returns>
+        /// <param name="board">Board to check.</param>
+        /// <returns>Returns a State.</returns>
         public State Check(Board board)
         {
             if (CheckForLose(board, State.Black)) return State.White;
@@ -21,11 +21,11 @@ namespace FelliGame
 
         /// <summary>
         /// This methods verifies if the selected player activated any 
-        /// of the lose conditions
+        /// of the lose conditions.
         /// </summary>
-        /// <param name="board"></param>
-        /// <param name="player"></param>
-        /// <returns></returns>
+        /// <param name="board">Board to check.</param>
+        /// <param name="player">Player to check if they lost.</param>
+        /// <returns>True if they lost, false if not.</returns>
         private bool CheckForLose(Board board, State player)
         {
             int found = 0;
@@ -50,10 +50,10 @@ namespace FelliGame
         }
 
         /// <summary>
-        /// This method verifies if the corrent piece has any move avaible
+        /// This method verifies if the current Piece has any move available.
         /// </summary>
-        /// <param name="board"></param>
-        /// <param name="position"></param>
+        /// <param name="board">Board to check.</param>
+        /// <param name="position">Position to check.</param>
         /// <returns></returns>
         private bool CheckForMove(Board board, Position position)
         {
