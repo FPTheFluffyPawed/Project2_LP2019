@@ -15,7 +15,9 @@ ajudou os outros. Trabalhou nas classes `Board.cs`, `ConsoleGame.cs`,
 
 **João Dias (a21803573)**
 
-- Trabalhou com o Inácio Amerio em várias partes do código, nomeadamente `Board.cs`, em que focou na parte de trabalhar na mecânica de saltar sobre peças, em termos de verificar quando era possível fazer isso ou não. Adicionalmente trabalhou na classe `WinChecker.cs`.
+- Trabalhou com o Inácio Amerio em várias partes do código, nomeadamente 
+`Board.cs`, em que focou na parte de trabalhar na mecânica de saltar sobre 
+peças, em termos de verificar quando era possível fazer isso ou não. Adicionalmente trabalhou na classe `WinChecker.cs`.
 
 [Repositório Git público.](https://github.com/FPTheFluffyPawed/Project2_LP2019)
 
@@ -23,9 +25,11 @@ ajudou os outros. Trabalhou nas classes `Board.cs`, `ConsoleGame.cs`,
 
 ### Descrição da solução
 
-O programa foi organizado de forma que possa-se utilizar o código não só em consola, mas também em Unity. As classes `ConsoleMenu.cs`, `ConsoleGame.cs` e `ConsoleRenderer.cs` são utilizadas para ligar ao `Program.cs`. A partir das classes mencionadas, estas vão utilizar as classes `Board.cs`, `Piece.cs`, `State.cs`, `Position.cs`, `Player.cs` e `WinChecker.cs`, em que estas classes mencionadas são o jogo próprio.
+O programa foi organizado de forma que possa-se utilizar o código não só em consola, mas também em Unity. As classes `ConsoleMenu.cs`, `ConsoleGame.cs` e `ConsoleRenderer.cs` são utilizadas para ligar ao `Program.cs`. A partir das classes mencionadas, estas vão utilizar as classes `Board.cs`, `Piece.cs`, 
+`State.cs`, `Position.cs`, `Player.cs` e `WinChecker.cs`, em que estas classes mencionadas são o jogo próprio.
 
-`Position.cs`, `Piece.cs` e `State.cs` são classes de dados. `Position.cs` é utilizado para guardar a posição da peça em `Piece.cs`, que depois são utilizados para o `Board.cs`.
+`Position.cs`, `Piece.cs` e `State.cs` são classes de dados. `Position.cs` é utilizado para guardar a posição da peça em `Piece.cs`, que depois são 
+utilizados para o `Board.cs`.
 
 `Board.cs` têm a maioria do jogo e métodos relevantes ao funcionamento do jogo.
 
