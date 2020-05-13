@@ -4,6 +4,9 @@ using System.Text;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// Position class.
+    /// </summary>
     public class Position
     {
         // Variables.

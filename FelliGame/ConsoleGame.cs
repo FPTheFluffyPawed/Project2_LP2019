@@ -4,6 +4,9 @@ using System.Text;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// Class used for playing the game on a Console application.
+    /// </summary>
     public class ConsoleGame
     {
         Board board = new Board();
@@ -12,10 +15,14 @@ namespace FelliGame
         Player player1 = new Player();
         Player player2 = new Player();
 
+        /// <summary>
+        /// Play the game!
+        /// </summary>
         public void Play()
         {
             string aux;
 
+            // Ask who goes first.
             do
             {
                 Console.WriteLine("Who starts, Black (1) or White (2)?");
@@ -30,6 +37,10 @@ namespace FelliGame
                         Console.WriteLine("White goes first!\n");
                         board.SwitchNextTurn();
                         break;
+                    default:
+                        Console.WriteLine("Insert a valid option.");
+                        aux = null;
+                        break;
                 }
             } while (aux == null);
 
@@ -40,7 +51,7 @@ namespace FelliGame
                 // 2 - Show available pieces for current player
                 // 3 - Ask for piece to move
                 // 4 - Which Direction
-                // Rinse and repeat until game is over
+                // Rinse and repeat until game is over!
                 renderer.RenderBoard(board);
 
                 Position nextMove;
@@ -79,6 +90,7 @@ namespace FelliGame
                 }
             }
 
+            // When the game is over, show the results and the final board.
             renderer.RenderBoard(board);
             renderer.RenderResults(winChecker.Check(board));
 
