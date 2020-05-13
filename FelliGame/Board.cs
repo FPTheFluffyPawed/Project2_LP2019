@@ -9,8 +9,7 @@ namespace FelliGame
     /// </summary>
     public class Board
     {
-        // We can say that the board is made up of state, since the board house
-        // will have a given state
+        // The board is made up of Pieces.
         private Piece[,] board;
 
         // The next turn.
