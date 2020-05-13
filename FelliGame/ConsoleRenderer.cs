@@ -4,8 +4,16 @@ using System.Text;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// Class used for rendering in a Console.
+    /// </summary>
     public class ConsoleRenderer
     {
+        /// <summary>
+        /// Method that renders out the board with numbers, pieces, along with
+        /// the diagonal style that FelliGame has.
+        /// </summary>
+        /// <param name="board"></param>
         public void RenderBoard(Board board)
         {
             string[,] symbols = new string[5, 3];
@@ -17,6 +25,7 @@ namespace FelliGame
                 {
                     Position position = new Position(row, column);
 
+                    // If the position is occupied.
                     if (board.IsOccupied(position))
                     {
                         symbols[row, column] = SymbolFor(
@@ -28,6 +37,7 @@ namespace FelliGame
                             Console.Write(" {0} ", symbols[row, column]);
                         else Console.Write(symbols[row, column]);
                     }
+                    // If its empty, draw dots!
                     else
                     {
                         if(row < 2) Console.Write(" .");
@@ -57,6 +67,10 @@ namespace FelliGame
                 return ".";
         }
 
+        /// <summary>
+        /// Render out who won the game..
+        /// </summary>
+        /// <param name="winner">State to receive.</param>
         public void RenderResults(State winner)
         {
             if (winner == State.White)

@@ -4,8 +4,15 @@ using System.Text;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// Player class that handles the inputs.
+    /// </summary>
     public class Player
     {
+        /// <summary>
+        /// Returns a position, converting an input into a valid position.
+        /// </summary>
+        /// <returns>Position returned.</returns>
         public Position GetPosition()
         {
             bool isConverted = false;
@@ -22,6 +29,11 @@ namespace FelliGame
             return desiredCoordinate;
         }
         
+        /// <summary>
+        /// Convert the input into a valid position.
+        /// </summary>
+        /// <param name="position">Option selected from before.</param>
+        /// <returns>Position to return.</returns>
         private Position PositionForNumber(int position)
         {
             switch (position)

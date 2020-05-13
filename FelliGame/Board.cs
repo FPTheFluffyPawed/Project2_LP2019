@@ -5,8 +5,7 @@ using System.Text;
 namespace FelliGame
 {
     /// <summary>
-    /// We'll create a regular 5x5 board and then restrict the player movements
-    /// to the desired spots that make the board for this games.
+    /// Class that consists of pieces and works as a board for the game.
     /// </summary>
     public class Board
     {
@@ -14,10 +13,12 @@ namespace FelliGame
         // will have a given state
         private Piece[,] board;
 
+        // The next turn.
         public State NextTurn { get; private set; }
 
-        // Create our board for use. For now, it'll be limited to 5 x 5.
+        // Create our board for use. For now, it'll be limited to 5 x 3.
         // It will automatically assign the states to the proper locations.
+        // By default, leave Black as the starting.
         public Board()
         {
             board = new Piece[5, 3];
@@ -25,6 +26,12 @@ namespace FelliGame
             AssignStates();
         }
 
+        /// <summary>
+        /// Check if the piece is in or near the center lines to allow
+        /// diagonal movement.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <returns>True if it can, false if it can't.</returns>
         private bool IsPieceInCenter(Position pos)
         {
             // Center is (2, 1).
@@ -41,10 +48,9 @@ namespace FelliGame
 
         /// <summary>
         /// Used to check if a piece can move in any direction.
-        /// WIP: Check if there is a free spot past the actual piece.
         /// </summary>
-        /// <param name="destination"></param>
-        /// <returns></returns>
+        /// <param name="currentPos">The position we are checking.</param>
+        /// <returns>True if it can, false otherwise.</returns>
         public bool CanMoveAtAll(Position currentPos)
         {
             // WIP: Later on to check if there is a spot to "eat"
@@ -89,11 +95,11 @@ namespace FelliGame
                 possiblePositions[4] = new Position(
                     currentPos.X + 1, currentPos.Y + 1);
 
-                // Lower Left.
+                // Upper Right.
                 possiblePositions[5] = new Position(
                     currentPos.X - 1, currentPos.Y + 1);
 
-                // Upper Right.
+                // Lower Left.
                 possiblePositions[6] = new Position(
                     currentPos.X + 1, currentPos.Y - 1);
 
@@ -113,6 +119,11 @@ namespace FelliGame
             return false;
         }
 
+        /// <summary>
+        /// Method to return the position we are moving towards. 
+        /// </summary>
+        /// <param name="selectedPiece">Piece that we are moving.</param>
+        /// <returns>Destination position.</returns>
         public Position Move(Piece selectedPiece)
         {
             // The converted input.
@@ -171,6 +182,7 @@ namespace FelliGame
                 Console.WriteLine("Lower/Right (5) | Upper/Right (6) |" +
                     " Lower/Left (7) | Upper/Left (8)");
 
+            // Keep asking for a direction until we get a valid input.
             while(!convertSuccesful)
             {
                 Console.Write("Which direction? (Insert a valid option.)");
@@ -182,16 +194,22 @@ namespace FelliGame
             // Adjust for our ForLoop.
             convertedAux--;
 
+            // Run through all destinations.
             for(int i = 0; i <= destinations.Length; i++)
             {
+                // Until we find our input.
                 if(i == convertedAux)
                 {
-                    if(!IsOutOfBounds(destinations[i]) && IsOccupied(destinations[i]))
+                    // Check if its not out of bounds and is occupied.
+                    if(!IsOutOfBounds(destinations[i])
+                        && IsOccupied(destinations[i]))
                     {
+                        // Check if we can eat to see if we can jump over it.
                         if (CanEat(destinations[i]))
                         {
                             return JumpPosition(convertedAux, destinations[i]);
                         }
+                        // Else, return the normal destination.
                         else
                             return destinations[i];
                     }
@@ -202,6 +220,14 @@ namespace FelliGame
             return blockedPosition;
         }
 
+        /// <summary>
+        /// Returns the position after jumping and also sets the position
+        /// found to null since we already got confirmation that we can make
+        /// this jump.
+        /// </summary>
+        /// <param name="option">The option inserted.</param>
+        /// <param name="position">The position to set to null.</param>
+        /// <returns>Position after jumping over a piece.</returns>
         private Position JumpPosition(int option, Position position)
         {
             board[position.X, position.Y] = null;
@@ -227,6 +253,12 @@ namespace FelliGame
             }
         }
 
+        /// <summary>
+        /// Method to change a piece's current position and set the origin
+        /// to null.
+        /// </summary>
+        /// <param name="piece">Piece we are moving.</param>
+        /// <param name="position">Position destination.</param>
         private void MovePiece(Piece piece, Position position)
         {
             // Place the piece in the desired location.
@@ -239,25 +271,38 @@ namespace FelliGame
             piece.Pos = position;
         }
 
+        /// <summary>
+        /// Check to see if the move done by the player was valid.
+        /// If it was, the turn was succesful and so we swap.
+        /// If not, try again!
+        /// </summary>
+        /// <param name="piece">Piece to check.</param>
+        /// <param name="position">Position to check.</param>
+        /// <returns>True if it was good, false is not.</returns>
         public bool WasTurnSuccesful(Piece piece, Position position)
         {
-            // If this spot is occupied, return it as false.
+            // If the move done was out of bounds, false.
             if (IsOutOfBounds(position)) return false;
+            // If the move was in a place already occupied, false.
             if (IsOccupied(position)) return false;
 
-            // Else, we move the position and then move onto next turn.
+            // If the move was done right, we move the piece and swap turn.
             MovePiece(piece, position);
             SwitchNextTurn();
             return true;
         }
 
+        /// <summary>
+        /// Displays all available pieces that are available for movement.
+        /// </summary>
+        /// <param name="currentPlayer">State to check for.</param>
         public void ShowAvailableStates(State currentPlayer)
         {
             int number = 0;
 
             // This will run through the board and
             // check which ones can move. Printing
-            // Out the relevant pieces
+            // out the relevant pieces.
             Console.WriteLine("\nAvailable pieces for movement:");
             for (int x = 0; x < board.GetLength(0); x++)
                 for(int y = 0; y < board.GetLength(1); y++)
@@ -279,11 +324,21 @@ namespace FelliGame
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Get a piece at a position.
+        /// </summary>
+        /// <param name="position">Position to check.</param>
+        /// <returns>Piece.</returns>
         public Piece GetPiece(Position position)
         {
             return board[position.X, position.Y];
         }
 
+        /// <summary>
+        /// Checks if the position is out of the board's bounds.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <returns>True if its out of bounds, false otherwise.</returns>
         private bool IsOutOfBounds(Position pos)
         {
             if (pos.Y > board.GetLength(1) - 1 || pos.Y < 0
@@ -293,21 +348,34 @@ namespace FelliGame
                 return false;
         }
 
+        /// <summary>
+        /// Method that returns if a board position is null or not.
+        /// </summary>
+        /// <param name="pos">Position to check.</param>
+        /// <returns>True or false.</returns>
         public bool IsOccupied(Position pos)
         {
             return board[pos.X, pos.Y] != null;
         }
 
+        /// <summary>
+        /// Bool to check if it can move to a location.
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <returns></returns>
         private bool CanMoveToLocation(Position destination)
         {
+            // Checks if its not out of bounds first.
             if(!IsOutOfBounds(destination))
             {
+                // Then checks if its not occupied.
                 if(!IsOccupied(destination))
                 {
                     return true;
                 }
                 else
                 {
+                    // Checks if it can be eaten as well.
                     if (CanEat(destination))
                         return true;
                     else
@@ -317,20 +385,15 @@ namespace FelliGame
             return false;
         }
 
+        /// <summary>
+        /// Method that checks if the piece in the position sent can be eaten.
+        /// It checks all around the position to see if it has any available
+        /// spots past the direction in which we are going.
+        /// </summary>
+        /// <param name="currentPos">Position to check for eating.</param>
+        /// <returns>True if it can be eaten or false otherwise.</returns>
         private bool CanEat(Position currentPos)
         {
-            // WIP: Later on to check if there is a spot to "eat"
-            // should also ask for the currentPiece's state as well
-            // then we can use ifs to check!
-            //
-            // If it's white, use GetPiece to check for the opponent
-            //
-            // This is just so we can't hop over our own pieces to "eat",
-            // because that makes no sense.
-
-            // If the piece is in the center, we'll add the diagonal movement
-            // to check as well.
-
             // Create the possible positions.
             Position[] possiblePositions = new Position[8];
 
@@ -348,7 +411,7 @@ namespace FelliGame
             possiblePositions[2] = new Position(
                 currentPos.X - 1, currentPos.Y + 1);
 
-            // lower right.
+            // Lower right.
             possiblePositions[3] = new Position(
                 currentPos.X + 1, currentPos.Y + 1);
 
@@ -368,10 +431,21 @@ namespace FelliGame
             possiblePositions[7] = new Position(
                 currentPos.X, currentPos.Y + 1);
 
+            // Run through every possible position.
             for (int i = 0; i < possiblePositions.Length; i++)
+                // Check if its out of bounds first before diving deeper.
                 if(!IsOutOfBounds(possiblePositions[i]))
-                    if (GetPiece(currentPos) != null && GetPiece(possiblePositions[i]) != null)
+                    // Check if the piece acquired is occupied and the one we
+                    // are checking is also occupied.
+                    if (GetPiece(currentPos) != null
+                        && GetPiece(possiblePositions[i])!= null)
                     {
+                        // After this, check if its White or Black, to then
+                        // check the piece in the possible position is the
+                        // opponent's state.
+                        //
+                        // After that, just check if the position beyond is
+                        // free to allow movement.
                         if (GetPiece(currentPos).State == State.White)
                         {
                             if (GetPiece(possiblePositions[i]).State == State.Black)
@@ -453,12 +527,23 @@ namespace FelliGame
                 return false;
         }
 
+        /// <summary>
+        /// Swaps the player who is playing, checking if the current player
+        /// is Black to then swap to White, and vice-versa.
+        /// </summary>
         public void SwitchNextTurn()
         {
             if (NextTurn == State.Black) NextTurn = State.White;
             else NextTurn = State.Black;
         }
 
+        /// <summary>
+        /// Set the initial position of the method. Used in AssignStates().
+        /// </summary>
+        /// <param name="x">Row.</param>
+        /// <param name="y">Column.</param>
+        /// <param name="state">White, Black or Blocked.</param>
+        /// <returns>Assigns the piece created in the board.</returns>
         private Piece SetInitialLocation(int x, int y, State state)
         {
             Piece piece = new Piece(state);
@@ -466,14 +551,15 @@ namespace FelliGame
             return board[x, y] = piece;
         }
 
+        /// <summary>
+        /// Method to assign the initial states of the game.
+        /// </summary>
         private void AssignStates()
         {
             // Since the default state of the board is always the same,
             // there just isn't any other way to go around this.
-            // WIP: Could be iterated instead of hard-coded? Probably not worth
-            // the trouble.
 
-            // From top to down.
+            // From top-to-down.
             // BLACK SIDE
             SetInitialLocation(0, 0, State.Black);
             SetInitialLocation(0, 1, State.Black);

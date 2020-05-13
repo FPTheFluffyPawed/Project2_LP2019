@@ -4,6 +4,9 @@ using System.Text;
 
 namespace FelliGame
 {
+    /// <summary>
+    /// Class to use as a menu for the Console application.
+    /// </summary>
     public class ConsoleMenu
     {
         // The Dictionary is used to swap between menus.
@@ -38,9 +41,11 @@ namespace FelliGame
                 "path line) in any direction where exists a free adjacent spot." +
                 "\nYou can take out enemy pieces by jumping above them, and " +
                 "you'll land on the free spot adjacent to the previous enemy" +
-                " spot. (Just like in checkers.)" +
+                " spot. (Just like in Checkers.)" +
                 "\n\n*** Win conditions ***\n" +
                 "\nThe player who takes all the opponent pieces first wins!" +
+                "\nIf the current player blocks all the opponent's pieces," +
+                " the current player wins!" +
                 "\nb - Back");
 
             currentMenu = "menu1";
