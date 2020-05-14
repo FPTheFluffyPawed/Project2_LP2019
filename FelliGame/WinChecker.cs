@@ -39,14 +39,15 @@ namespace FelliGame
                     if(piece != null)
                         if (piece.State == player)
                         {
-                            found =+ 1;
+                            found += 1;
                             if (CheckForMove(board, new Position(row, column)))
                                 cantMove += 1;
                         }
                 }
             }
-            if (found != cantMove) return false;
-            return true;
+            if (found == cantMove) return true;
+            if (found == 0) return true;
+            return false;
         }
 
         /// <summary>
@@ -57,8 +58,8 @@ namespace FelliGame
         /// <returns></returns>
         private bool CheckForMove(Board board, Position position)
         {
-            if (board.CanMoveAtAll(position)) return true;
-            return false;
+            if (board.CanMoveAtAll(position)) return false;
+            return true;
         }
     }
 }
