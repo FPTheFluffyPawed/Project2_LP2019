@@ -47,7 +47,7 @@ namespace FelliGame
         }
 
         /// <summary>
-        /// Open the menu associated to ConsoleMenu.
+        /// Open the menu associated to ConsoleUI.
         /// </summary>
         public void Menu()
         {
