@@ -25,11 +25,6 @@ namespace FelliGame
         private ConsoleUI renderer;
 
         /// <summary>
-        /// Menu to open for Console.
-        /// </summary>
-        //private ConsoleMenu cm;
-
-        /// <summary>
         /// Player 1.
         /// </summary>
         private Player player1;
